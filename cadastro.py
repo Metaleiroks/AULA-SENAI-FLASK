@@ -1,1 +1,0 @@
-print("Bem vindo ao flask Cadastro!")
