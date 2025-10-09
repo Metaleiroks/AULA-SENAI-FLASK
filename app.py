@@ -43,6 +43,16 @@ def adicionar_aluno_json():
 def listar_alunos():
     return alunos 
 
+#endpoint: deletar aluno
+@app.route('/deletaraluno/<int:id>', methods=['DELETE'])
+def deletar_aluno(id):
+    for aluno in alunos:
+        if aluno['id'] == id:
+            alunos.remove(aluno)
+            return {"mensagem": "Aluno deletado com sucesso"}
+    return {"mensagem": "Aluno não encontrado"}
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
