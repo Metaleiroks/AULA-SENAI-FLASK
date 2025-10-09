@@ -2,23 +2,46 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
+alunos = [
+    {"id": 1, "nome": "Kevyn"},
+    {"id": 2, "nome": "July"},
+    {"id": 3, "nome": "Aline"},
+]
+
 #endpoint: buscar todos os alunos
 @app.route('/buscaraluno/<int:id>', methods=['GET'])
 def buscar_alunos(id):
-    return f"aluno de codigo: {id}"
+    for aluno in alunos:
+        if aluno['id'] == id:
+            return aluno
 
+    return {"mensagem": "Aluno não encontrado"}
 #endpoint: adicionar aluno
 @app.route('/adicionaraluno', methods=['POST'])
 def adicionar_aluno():
     
     id = request.args.get('id')
     nome = request.args.get('nome')
-    return f"Aluno Cadastrado: id:{id} - nome: {nome}"
+    novo = {"id": id, "nome": nome}
+    novo["id"] = len(alunos) + 1
+    alunos.append(novo)
+    return alunos 
+
+#endpoint: adicionar aluno por json
+@app.route('/adicionaralunojson', methods=['POST'])
+def adicionar_aluno_json():
+    
+    novo = request.get_json()
+    novo[" id"] = len(alunos) + 1
+    alunos.append(novo)
+    return alunos
+
+
 
 #endpoint: listar alunos
 @app.route('/listaralunos', methods=['GET'])
 def listar_alunos():
-    return "Todos alunos Listados" 
+    return alunos 
 
 
 if __name__ == "__main__":
